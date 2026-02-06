@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>FOODIE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#ffeef2;
+  transition:.3s;
+}
+
+body.dark{
+  background:#8f2d56;
+  color:white;
+}
+
+header{
+  background:#ff6f91;
+  color:white;
+  padding:15px;
+  text-align:center;
+  font-size:20px;
+  position:relative;
+}
+
+#aguaIcono{
+  position:absolute;
+  right:15px;
+  top:12px;
+  cursor:pointer;
+}
+
+.container{
+  padding:20px;
+  text-align:center;
+}
+
+input,select{
+  padding:10px;
+  margin:5px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+button{
+  padding:12px 16px;
+  margin:6px;
+  border:none;
+  border-radius:20px;
+  background:#ffb6c1;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.main-btn{
+  background:#ff4d6d;
+  color:white;
+}
+
+.selected{
+  background:#ff4d6d!important;
+  color:white;
+  transform:scale(1.05);
+}
+
+.hidden{display:none;}
+
+.card{
+  background:white;
+  color:black;
+  padding:15px;
+  border-radius:15px;
+  margin:10px 0;
+}
+
+body.dark .card{
+  background:#b23a6f;
+  color:white;
+}
+
+.top-app{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.msg{
+  font-size:14px;
+  text-align:left;
+  max-width:70%;
+}
+
+.icon{
+  font-size:22px;
+  cursor:pointer;
+}
+.config-text{
+  text-align:center;
+  font-size:14px;
+  line-height:1.6;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  FOODIE 🍓
+  <span id="aguaIcono" onclick="abrirAgua()">💧</span>
+</header>
+
+<!-- REGISTRO -->
+<div class="container" id="registro">
+  <h2>Regístrate</h2>
+  <input id="nombre" placeholder="Nombre">
+  <input id="numero" placeholder="Número">
+  <input id="edad" placeholder="Edad">
+  <select id="genero">
+    <option value="">Género</option>
+    <option>Mujer</option>
+    <option>Hombre</option>
+    <option>Otro</option>
+  </select><br>
+  <button class="main-btn" onclick="entrar()">Entrar</button>
+</div>
+
+<!-- APP COMIDA -->
+<div class="container hidden" id="app">
+
+  <div class="top-app">
+    <div class="msg card">
+      Hoy mereces cuidarte y escucharte.<br>
+      Comer bien también es amor propio.
+    </div>
+    <div style="display:flex; gap:10px;">
+      <div class="icon" onclick="abrirConfig()">⚙️</div>
+      <div class="icon" onclick="abrirTareas()">📝</div>
+    </div>
+  </div>
+
+  <h2 id="saludo"></h2>
+
+  <h3>¿Cómo te sientes?</h3>
+  <button class="mood" onclick="selMood(this,'feliz')">😊 Feliz</button>
+  <button class="mood" onclick="selMood(this,'neutro')">😐 Neutro</button>
+  <button class="mood" onclick="selMood(this,'triste')">😢 Triste</button>
+
+  <h3>¿Qué quieres comer?</h3>
+  <button class="food" onclick="selFood(this,'desayuno')">Desayuno</button>
+  <button class="food" onclick="selFood(this,'comida')">Comida</button>
+  <button class="food" onclick="selFood(this,'cena')">Cena</button>
+  <button class="food" onclick="selFood(this,'snack')">Snack</button>
+
+  <br>
+  <button class="main-btn" onclick="recomendar()">Recomendar</button>
+
+  <div id="resultado"></div>
+</div>
+
+<!-- HIDRATACIÓN -->
+<div class="container hidden" id="aguaApp">
+  <h2>Hidratación 💧</h2>
+
+  <div class="card">
+    <h4>Consejos</h4>
+    <ul>
+      <li>Bebe agua al despertar</li>
+      <li>Lleva tu botella</li>
+      <li>Agrega fruta al agua</li>
+      <li>Evita refrescos</li>
+
+      <li>Toma agua todas las noches</li>
+      <li>Pon atencion en el color de tu orina</li>
+      <li>Lleva agua siempre a la escuela</li>
+      <li>Evita tomar mucho cafecito</li>
+
+      <li>Toma de atraguitos</li>
+      <li>No te esperes hasta que tengas sed</li>
+      <li>Minimo toma 3 vasos de agua al dia</li>
+      <li>Si haces muchi ejercicio tomas mucha agua, No tomes power es mejor tomar agua</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    💧 Agua: <span id="agua">0</span><br>
+    <button onclick="sumar('agua')">+1</button><br><br>
+
+    ☕ Café: <span id="cafe">0</span><br>
+    <button onclick="sumar('cafe')">+1</button><br><br>
+
+    🧃 Jugo: <span id="jugo">0</span><br>
+    <button onclick="sumar('jugo')">+1</button><br><br>
+
+    🥤 Soda: <span id="soda">0</span><br>
+    <button onclick="sumar('soda')">+1</button>
+  </div>
+
+  <button class="main-btn" onclick="volverComida()">⬅ Volver</button>
+</div>
+
+<!-- CONFIG -->
+<div class="container hidden" id="config">
+  <h2>Configuración ⚙️</h2>
+
+  <div class="card">
+    <button onclick="toggleDark()">Modo oscuro 🌙</button>
+    <p><strong>Versión:</strong> 1.0.2</p>
+  </div>
+
+  <div class="card config-text">
+    Esta aplicación te ayuda a que tengas un ánimo mejor y no solo eso,  
+    también puedes registrar qué tanto tomas agua, jugo, café y soda  
+    en todo el año y ver qué es lo que tomas más para que el próximo año  
+    mejores con tu bonita salud, lo mejor de todo es que es para casi todas
+    las edades, si tienes mas de 15 eres super bienvenida en esta hermosa y 
+    nueva aplicacion, esta app es para tiii .  
+    <br><br>
+    Es una aplicación fácil de usar y de comprender.
+  </div>
+
+  <button class="main-btn" onclick="volverApp()">⬅ Volver</button>
+</div>
+
+<!-- LISTA DE TAREAS -->
+<div class="container hidden" id="tareasApp">
+  <h2>Lista de Tareas Diarias 📝</h2>
+
+  <div class="card" id="listaTareas">
+    <label><input type="checkbox" class="tarea"> Tender mi cama</label><br>
+    <label><input type="checkbox" class="tarea"> Hacer ejercicio</label><br>
+    <label><input type="checkbox" class="tarea"> Hacer tarea</label><br>
+    <label><input type="checkbox" class="tarea"> Bañarte</label><br>
+    <label><input type="checkbox" class="tarea"> Limpiar mi habitación</label><br>
+    <label><input type="checkbox" class="tarea"> Estudiar</label><br>
+    <label><input type="checkbox" class="tarea"> Ver alguna película o serie</label><br>
+  </div>
+
+  <input type="text" id="nuevaTarea" placeholder="Agregar nueva tarea">
+  <button onclick="agregarTarea()">➕ Agregar</button>
+
+  <div id="mensajeTareas" style="margin-top:10px; font-weight:bold;"></div>
+
+  <button class="main-btn" onclick="volverApp()">⬅ Volver</button>
+</div>
+
+<script>
+let mood = "";
+let food = "";
+
+function entrar(){
+  if(!nombre.value || !edad.value || !genero.value){
+    alert("Completa todos los campos");
+    return;
+  }
+
+  if(parseInt(edad.value) < 15){
+    alert("Esta aplicación es solo para personas de 15 años en adelante");
+    return;
+  }
+
+  registro.classList.add("hidden");
+  app.classList.remove("hidden");
+  saludo.innerText = "Hola " + nombre.value + " 💖";
+}
+
+function selMood(btn,val){
+  mood = val;
+  document.querySelectorAll(".mood").forEach(b=>b.classList.remove("selected"));
+  btn.classList.add("selected");
+}
+
+function selFood(btn,val){
+  food = val;
+  document.querySelectorAll(".food").forEach(b=>b.classList.remove("selected"));
+  btn.classList.add("selected");
+}
+
+/* 🔧 AQUÍ ESTÁ EL ARREGLO BIEN HECHO */
+function recomendar(){
+  let texto = "Selecciona cómo te sientes y qué quieres comer 😊";
+
+  if(mood=="feliz" && food=="desayuno") texto="Hotcakes con fruta 🍓";
+  else if(mood=="feliz" && food=="comida") texto="Pasta ligera 🍝";
+  else if(mood=="feliz" && food=="cena") texto="Ensalada fresca 🥗";
+  else if(mood=="feliz" && food=="snack") texto="Fruta o palomitas 🍿";
+
+  else if(mood=="neutro" && food=="desayuno") texto="Huevito con pan 🍳";
+  else if(mood=="neutro" && food=="comida") texto="Arroz con pollo 🍚";
+  else if(mood=="neutro" && food=="cena") texto="Sándwich 🥪";
+  else if(mood=="neutro" && food=="snack") texto="Galletas integrales 🍪";
+
+  else if(mood=="triste" && food=="desayuno") texto="Pan con chocolate ☕";
+  else if(mood=="triste" && food=="comida") texto="Sopita caliente 🍲";
+  else if(mood=="triste" && food=="cena") texto="Puré con pollo 🍗";
+  else if(mood=="triste" && food=="snack") texto="Algo dulce 🍫";
+
+  resultado.innerHTML = `<div class="card">${texto}</div>`;
+}
+
+function abrirAgua(){app.classList.add("hidden");aguaApp.classList.remove("hidden");}
+function volverComida(){aguaApp.classList.add("hidden");app.classList.remove("hidden");}
+function abrirConfig(){app.classList.add("hidden");config.classList.remove("hidden");}
+function volverApp(){config.classList.add("hidden");app.classList.remove("hidden");}
+function toggleDark(){document.body.classList.toggle("dark");}
+function sumar(id){document.getElementById(id).innerText++;}
+
+/* 🔹 FUNCIONES NUEVAS: LISTA DE TAREAS */
+function abrirTareas(){
+  app.classList.add("hidden");
+  tareasApp.classList.remove("hidden");
+  cargarTareas();
+}
+
+function agregarTarea(){
+  const input = document.getElementById("nuevaTarea");
+  if(input.value.trim() === "") return;
+  const label = document.createElement("label");
+  label.innerHTML = `<input type="checkbox" class="tarea"> ${input.value}`;
+  document.getElementById("listaTareas").appendChild(label);
+  document.getElementById("listaTareas").appendChild(document.createElement("br"));
+  input.value = "";
+  guardarTareas();
+}
+
+function cargarTareas(){
+  const tareas = document.querySelectorAll(".tarea");
+  tareas.forEach(t => t.addEventListener("change", revisarTareas));
+}
+
+function revisarTareas(){
+  const tareas = document.querySelectorAll(".tarea");
+  let todas = true;
+  tareas.forEach(t => {
+    if(!t.checked) todas = false;
+  });
+  const mensaje = document.getElementById("mensajeTareas");
+  if(todas && tareas.length>0){
+    mensaje.innerText = "¡Estoy muy orgullosa de tu logro del día de hoy, te espero mañana! 💖";
+  } else {
+    mensaje.innerText = "";
+  }
+}
+
+// Guardar y cargar tareas cada 24h
+function guardarTareas(){
+  const tareas = [];
+  document.querySelectorAll(".tarea").forEach(t=>{
+    tareas.push({texto: t.parentNode.innerText.trim(), done: t.checked});
+  });
+  localStorage.setItem("tareasFOODIE", JSON.stringify(tareas));
+  localStorage.setItem("tareasTime", Date.now());
+}
+
+function cargarTareasLocal(){
+  const savedTime = localStorage.getItem("tareasTime");
+  if(savedTime && (Date.now() - savedTime > 24*60*60*1000)){
+    localStorage.removeItem("tareasFOODIE");
+    localStorage.removeItem("tareasTime");
+  }
+  const tareas = JSON.parse(localStorage.getItem("tareasFOODIE") || "[]");
+  const lista = document.getElementById("listaTareas");
+  lista.innerHTML = "";
+  tareas.forEach(t => {
+    const label = document.createElement("label");
+    label.innerHTML = `<input type="checkbox" class="tarea" ${t.done ? "checked" : ""}> ${t.texto}`;
+    lista.appendChild(label);
+    lista.appendChild(document.createElement("br"));
+  });
+  cargarTareas();
+}
+
+window.addEventListener("load", cargarTareasLocal);
+window.addEventListener("beforeunload", guardarTareas);
+
+</script>
+
+</body>
+</html>
